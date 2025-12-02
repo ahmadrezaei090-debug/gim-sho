@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پای‌لرن | آموزش تعاملی پایتون</title>
+    <!-- فونت وزیرمتن برای ظاهر زیبای فارسی -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <!-- کتابخانه Skulpt برای اجرای پایتون در مرورگر -->
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #1e1e2e;
+            --sidebar-bg: #252537;
+            --text-color: #e0e0e0;
+            --accent-color: #ffd43b; /* رنگ زرد پایتون */
+            --accent-secondary: #306998; /* رنگ آبی پایتون */
+            --success-color: #4caf50;
+            --error-color: #ff5252;
+            --code-bg: #15151e;
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* هدر سایت */
+        header {
+            background-color: var(--sidebar-bg);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent-secondary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--accent-secondary); }
+
+        /* طرح بندی اصلی */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* سایدبار لیست دروس */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            overflow-y: auto;
+            border-left: 1px solid #333;
+            transition: transform 0.3s;
+        }
+
+        .lesson-list {
+            list-style: none;
+            padding: 10px;
+        }
+
+        .lesson-item {
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .lesson-item.active {
+            background-color: var(--accent-secondary);
+            color: white;
+        }
+
+        .lesson-status {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* بخش محتوای درس */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .lesson-header h1 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .lesson-text {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border-right: 4px solid var(--accent-color);
+        }
+
+        code {
+            background-color: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ff9800;
+        }
+
+        /* ادیتور کد */
+        .editor-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: var(--sidebar-bg);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            flex-grow: 1;
+            min-height: 400px;
+            border: 1px solid #444;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-label {
+            font-weight: bold;
+            color: var(--accent-secondary);
+        }
+
+        textarea#code-input {
+            width: 100%;
+            height: 200px;
+            background-color: var(--code-bg);
+            color: #f8f8f2;
+            border: 1px solid #333;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', monospace; /* فونت کد */
+            font-size: 1rem;
+            resize: none;
+            direction: ltr; /* کد همیشه چپ به راست است */
+            outline: none;
+        }
+        
+        textarea#code-input:focus {
+            border-color: var(--accent-secondary);
+        }
+
+        .run-btn {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.1s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .run-btn:hover {
+            background-color: #43a047;
+            transform: scale(1.05);
+        }
+
+        .run-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* خروجی کنسول */
+        .output-console {
+            background-color: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-family: 'Consolas', monospace;
+            height: 150px;
+            overflow-y: auto;
+            direction: ltr;
+            border-top: 3px solid #333;
+            white-space: pre-wrap;
+        }
+
+        .output-label {
+            display: block;
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            direction: rtl;
+        }
+
+        /* صفحه خوش‌آمدگویی */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #welcome-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        #welcome-screen p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            color: #bbb;
+        }
+
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, var(--accent-secondary), var(--accent-color));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+        }
+
+        /* موبایل */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: 150px;
+                border-left: none;
+                border-bottom: 1px solid #333;
+            }
+            .content-area {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- صفحه شروع -->
+    <div id="welcome-screen">
+        <div style="font-size: 5rem; margin-bottom: 20px;">🐍</div>
+        <h1>آموزش تعاملی پایتون</h1>
+        <p>از صفرِ مطلق شروع کن و تبدیل به یک برنامه‌نویس پایتون شو.<br>بدون نیاز به نصب هیچ نرم‌افزاری، همینجا کد بزن و یاد بگیر.</p>
+        <button class="start-btn" onclick="startCourse()">شروع یادگیری رایگان</button>
+    </div>
+
+    <!-- هدر -->
+    <header>
+        <div class="logo">
+            <span style="font-size: 2rem;">&#128187;</span>
+            پای‌<span>لرن</span>
+        </div>
+        <div>
+            <!-- دکمه‌های ناوبری احتمالی -->
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- منوی سمت راست (دروس) -->
+        <aside>
+            <ul class="lesson-list" id="lesson-list">
+                <!-- لیست دروس با جاوا اسکریپت پر می‌شود -->
+            </ul>
+        </aside>
+
+        <!-- بخش اصلی (محتوا و تمرین) -->
+        <main class="content-area">
+            <div id="lesson-content">
+                <div class="lesson-header">
+                    <h1 id="lesson-title">عنوان درس</h1>
+                </div>
+                <div class="lesson-text" id="lesson-desc">
+                    توضیحات درس اینجا قرار می‌گیرد...
+                </div>
+            </div>
+
+            <!-- بخش کدنویسی -->
+            <div class="editor-container">
+                <div class="editor-toolbar">
+                    <span class="editor-label">محل کدنویسی (main.py):</span>
+                    <button class="run-btn" onclick="runPython()">
+                        &#9658; اجرا
+                    </button>
+                </div>
+                <textarea id="code-input" spellcheck="false" placeholder="کد خود را اینجا بنویسید..."></textarea>
+                
+                <div>
+                    <span class="output-label">خروجی ترمینال:</span>
+                    <div id="output" class="output-console"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // === محتوای آموزشی (دیتابیس دروس) ===
+        const curriculum = [
+            {
+                id: 1,
+                title: "درس ۱: سلام دنیا!",
+                content: `
+                    <p>به دنیای پایتون خوش آمدید! اولین سنت هر برنامه‌نویسی این است که به دنیا سلام کند.</p>
+                    <p>در پایتون، برای نمایش متن روی صفحه از دستور <code>print()</code> استفاده می‌کنیم.</p>
+                    <p>مثال: <br><code>print("Hello World")</code></p>
+                    <p><strong>تمرین:</strong> در کادر پایین دستور چاپ کردن متن "Salam Python" را بنویسید و دکمه اجرا را بزنید.</p>
+                `,
+                defaultCode: 'print("Salam Python")',
+                expectedOutput: "Salam Python"
+            },
+            {
+                id: 2,
+                title: "درس ۲: متغیرها (Variables)",
+                content: `
+                    <p>متغیرها مثل جعبه‌هایی هستند که می‌توانیم اطلاعات را در آن‌ها ذخیره کنیم.</p>
+                    <p>برای ساخت متغیر، فقط کافیست یک نام انتخاب کنید و با علامت <code>=</code> مقداری را به آن بدهید.</p>
+                    <p>مثال:<br><code>name = "Ali"<br>print(name)</code></p>
+                    <p><strong>تمرین:</strong> یک متغیر به نام <code>score</code> بسازید، مقدار آن را <code>20</code> قرار دهید و سپس آن را چاپ کنید.</p>
+                `,
+                defaultCode: '# کد خود را اینجا بنویسید\n'
+            },
+            {
+                id: 3,
+                title: "درس ۳: اعداد و محاسبات",
+                content: `
+                    <p>پایتون یک ماشین حساب قدرتمند است. شما می‌توانید جمع (+)، تفریق (-)، ضرب (*) و تقسیم (/) انجام دهید.</p>
+                    <p>مثال:<br><code>x = 5 + 3<br>print(x)</code></p>
+                    <p><strong>تمرین:</strong> برنامه ای بنویسید که حاصل ضرب عدد 12 در 4 را چاپ کند.</p>
+                `,
+                defaultCode: 'print(12 * 4)'
+            },
+            {
+                id: 4,
+                title: "درس ۴: شرط‌ها (If/Else)",
+                content: `
+                    <p>گاهی می‌خواهیم برنامه ما تصمیم بگیرد. اگر شرطی درست بود، کاری را انجام دهد.</p>
+                    <p>ساختار:<br>
+                    <code>if age > 18:<br>&nbsp;&nbsp;print("Bozorgsal")<br>else:<br>&nbsp;&nbsp;print("Koodak")</code>
+                    </p>
+                    <p>نکته مهم: در پایتون فاصله‌گذاری (Indentation) بسیار مهم است.</p>
+                    <p><strong>تمرین:</strong> کدی بنویسید که اگر متغیر <code>a = 10</code> بزرگتر از 5 بود، چاپ کند "Big".</p>
+                `,
+                defaultCode: 'a = 10\nif a > 5:\n    print("Big")'
+            },
+            {
+                id: 5,
+                title: "درس ۵: حلقه‌ها (Loops)",
+                content: `
+                    <p>اگر بخواهیم کاری را چند بار تکرار کنیم، از حلقه استفاده می‌کنیم.</p>
+                    <p>حلقه <code>for</code> برای تکرار روی یک بازه عالی است.</p>
+                    <p>مثال (چاپ اعداد 0 تا 4):<br><code>for i in range(5):<br>&nbsp;&nbsp;print(i)</code></p>
+                    <p><strong>تمرین:</strong> یک حلقه بنویسید که کلمه "Python" را 3 بار چاپ کند.</p>
+                `,
+                defaultCode: 'for i in range(3):\n    print("Python")'
+            },
+            {
+                id: 6,
+                title: "درس ۶: لیست‌ها (Lists)",
+                content: `
+                    <p>لیست‌ها مجموعه‌ای از داده‌ها هستند که با کاما جدا شده و داخل براکت <code>[]</code> قرار می‌گیرند.</p>
+                    <p>مثال:<br><code>fruits = ["Apple", "Banana", "Cherry"]<br>print(fruits[0]) # چاپ اولین آیتم</code></p>
+                    <p><strong>تمرین:</strong> یک لیست از ۳ رنگ بسازید و کل لیست را چاپ کنید.</p>
+                `,
+                defaultCode: 'colors = ["Red", "Green", "Blue"]\nprint(colors)'
+            }
+        ];
+
+        let currentLessonIndex = 0;
+
+        // === توابع رابط کاربری ===
+
+        function startCourse() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            loadLessonList();
+            loadLesson(0);
+        }
+
+        function loadLessonList() {
+            const listContainer = document.getElementById('lesson-list');
+            listContainer.innerHTML = '';
+            
+            curriculum.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                li.className = `lesson-item ${index === currentLessonIndex ? 'active' : ''}`;
+                li.onclick = () => loadLesson(index);
+                li.innerHTML = `
+                    <span>${lesson.title}</span>
+                    <span class="lesson-status">${index === currentLessonIndex ? '▶' : '●'}</span>
+                `;
+                listContainer.appendChild(li);
+            });
+        }
+
+        function loadLesson(index) {
+            currentLessonIndex = index;
+            const lesson = curriculum[index];
+            
+            // آپدیت UI محتوا
+            document.getElementById('lesson-title').innerText = lesson.title;
+            document.getElementById('lesson-desc').innerHTML = lesson.content;
+            document.getElementById('code-input').value = lesson.defaultCode;
+            document.getElementById('output').innerText = ''; // پاک کردن خروجی قبلی
+            
+            // آپدیت لیست سایدبار
+            const items = document.querySelectorAll('.lesson-item');
+            items.forEach((item, idx) => {
+                if(idx === index) {
+                    item.classList.add('active');
+                    item.querySelector('.lesson-status').innerText = '▶';
+                } else {
+                    item.classList.remove('active');
+                    item.querySelector('.lesson-status').innerText = '●';
+                }
+            });
+        }
+
+        // === موتور اجرای پایتون (Skulpt Configuration) ===
+        function outf(text) {
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerText += text;
+            outputDiv.scrollTop = outputDiv.scrollHeight; // اسکرول خودکار به پایین
+        }
+
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+                throw "File not found: '" + x + "'";
+            return Sk.builtinFiles["files"][x];
+        }
+
+        function runPython() {
+            const code = document.getElementById("code-input").value;
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerText = ""; // پاک کردن خروجی قبلی
+            outputDiv.style.color = "#0f0"; // رنگ پیشفرض سبز
+
+            // تنظیمات Skulpt
+            Sk.pre = "output";
+            Sk.configure({ output: outf, read: builtinRead });
+
+            // نمایش پیام در حال اجرا
+            outputDiv.innerText = "> Running...\n";
+
+            const myPromise = Sk.misceval.asyncToPromise(function() {
+                return Sk.importMainWithBody("<stdin>", false, code, true);
+            });
+
+            myPromise.then(function(mod) {
+                outf("\n> Done.");
+            },
+            function(err) {
+                // نمایش خطا با رنگ قرمز
+                outputDiv.style.color = "#ff5252";
+                outf("\n" + err.toString());
+            });
+        }
+    </script>
+</body>
+</html>
