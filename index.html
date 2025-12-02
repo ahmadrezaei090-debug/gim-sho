@@ -1,517 +1,2204 @@
-<!DOCTYPE html>
+# مستندات کامل کدهای پروژه پایتون‌یاد
+
+این فایل شامل تمامی کدهای پروژه به صورت یکپارچه برای مطالعه است.
+
+---
+
+## 📁 index.html
+
+```html
+<!doctype html>
 <html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پای‌لرن | آموزش تعاملی پایتون</title>
-    <!-- فونت وزیرمتن برای ظاهر زیبای فارسی -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <!-- کتابخانه Skulpt برای اجرای پایتون در مرورگر -->
-    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
-    
-    <style>
-        :root {
-            --bg-color: #1e1e2e;
-            --sidebar-bg: #252537;
-            --text-color: #e0e0e0;
-            --accent-color: #ffd43b; /* رنگ زرد پایتون */
-            --accent-secondary: #306998; /* رنگ آبی پایتون */
-            --success-color: #4caf50;
-            --error-color: #ff5252;
-            --code-bg: #15151e;
-            --border-radius: 8px;
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پایتون‌یاد | آموزش رایگان پایتون به فارسی</title>
+    <meta name="description" content="آموزش برنامه‌نویسی پایتون از صفر تا متوسط به زبان فارسی. درس‌های گام به گام، تمرین‌های عملی و محیط کدنویسی تعاملی." />
+    <meta name="author" content="پایتون‌یاد" />
+    <meta name="keywords" content="آموزش پایتون, یادگیری پایتون, برنامه نویسی پایتون, آموزش فارسی پایتون, Python tutorial" />
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Vazirmatn', sans-serif;
-        }
+    <meta property="og:title" content="پایتون‌یاد | آموزش رایگان پایتون به فارسی" />
+    <meta property="og:description" content="آموزش برنامه‌نویسی پایتون از صفر تا متوسط به زبان فارسی" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="پایتون‌یاد | آموزش رایگان پایتون" />
+    <meta name="twitter:description" content="آموزش برنامه‌نویسی پایتون از صفر تا متوسط به زبان فارسی" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
-        /* هدر سایت */
-        header {
-            background-color: var(--sidebar-bg);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--accent-secondary);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
+    <link rel="canonical" href="https://lovable.dev/projects/da257d70-1a8a-4a36-a2c9-3972b42f82b4" />
+  </head>
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo span { color: var(--accent-secondary); }
-
-        /* طرح بندی اصلی */
-        .main-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* سایدبار لیست دروس */
-        aside {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            overflow-y: auto;
-            border-left: 1px solid #333;
-            transition: transform 0.3s;
-        }
-
-        .lesson-list {
-            list-style: none;
-            padding: 10px;
-        }
-
-        .lesson-item {
-            padding: 12px 15px;
-            margin-bottom: 5px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .lesson-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .lesson-item.active {
-            background-color: var(--accent-secondary);
-            color: white;
-        }
-
-        .lesson-status {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
-        /* بخش محتوای درس */
-        .content-area {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .lesson-header h1 {
-            color: var(--accent-color);
-            margin-bottom: 10px;
-        }
-
-        .lesson-text {
-            line-height: 1.8;
-            font-size: 1.1rem;
-            background: rgba(255,255,255,0.03);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            border-right: 4px solid var(--accent-color);
-        }
-
-        code {
-            background-color: rgba(0,0,0,0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
-            color: #ff9800;
-        }
-
-        /* ادیتور کد */
-        .editor-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background-color: var(--sidebar-bg);
-            padding: 15px;
-            border-radius: var(--border-radius);
-            flex-grow: 1;
-            min-height: 400px;
-            border: 1px solid #444;
-        }
-
-        .editor-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .editor-label {
-            font-weight: bold;
-            color: var(--accent-secondary);
-        }
-
-        textarea#code-input {
-            width: 100%;
-            height: 200px;
-            background-color: var(--code-bg);
-            color: #f8f8f2;
-            border: 1px solid #333;
-            border-radius: var(--border-radius);
-            padding: 15px;
-            font-family: 'Consolas', 'Monaco', monospace; /* فونت کد */
-            font-size: 1rem;
-            resize: none;
-            direction: ltr; /* کد همیشه چپ به راست است */
-            outline: none;
-        }
-        
-        textarea#code-input:focus {
-            border-color: var(--accent-secondary);
-        }
-
-        .run-btn {
-            background-color: var(--success-color);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: transform 0.1s, background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .run-btn:hover {
-            background-color: #43a047;
-            transform: scale(1.05);
-        }
-
-        .run-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* خروجی کنسول */
-        .output-console {
-            background-color: #000;
-            color: #0f0;
-            padding: 15px;
-            border-radius: var(--border-radius);
-            font-family: 'Consolas', monospace;
-            height: 150px;
-            overflow-y: auto;
-            direction: ltr;
-            border-top: 3px solid #333;
-            white-space: pre-wrap;
-        }
-
-        .output-label {
-            display: block;
-            color: #666;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-            direction: rtl;
-        }
-
-        /* صفحه خوش‌آمدگویی */
-        #welcome-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        #welcome-screen h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--accent-color);
-        }
-        
-        #welcome-screen p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 40px;
-            color: #bbb;
-        }
-
-        .start-btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            background: linear-gradient(45deg, var(--accent-secondary), var(--accent-color));
-            border: none;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            transition: transform 0.3s;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
-        }
-
-        /* موبایل */
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-            }
-            aside {
-                width: 100%;
-                height: 150px;
-                border-left: none;
-                border-bottom: 1px solid #333;
-            }
-            .content-area {
-                padding: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- صفحه شروع -->
-    <div id="welcome-screen">
-        <div style="font-size: 5rem; margin-bottom: 20px;">🐍</div>
-        <h1>آموزش تعاملی پایتون</h1>
-        <p>از صفرِ مطلق شروع کن و تبدیل به یک برنامه‌نویس پایتون شو.<br>بدون نیاز به نصب هیچ نرم‌افزاری، همینجا کد بزن و یاد بگیر.</p>
-        <button class="start-btn" onclick="startCourse()">شروع یادگیری رایگان</button>
-    </div>
-
-    <!-- هدر -->
-    <header>
-        <div class="logo">
-            <span style="font-size: 2rem;">&#128187;</span>
-            پای‌<span>لرن</span>
-        </div>
-        <div>
-            <!-- دکمه‌های ناوبری احتمالی -->
-        </div>
-    </header>
-
-    <div class="main-container">
-        <!-- منوی سمت راست (دروس) -->
-        <aside>
-            <ul class="lesson-list" id="lesson-list">
-                <!-- لیست دروس با جاوا اسکریپت پر می‌شود -->
-            </ul>
-        </aside>
-
-        <!-- بخش اصلی (محتوا و تمرین) -->
-        <main class="content-area">
-            <div id="lesson-content">
-                <div class="lesson-header">
-                    <h1 id="lesson-title">عنوان درس</h1>
-                </div>
-                <div class="lesson-text" id="lesson-desc">
-                    توضیحات درس اینجا قرار می‌گیرد...
-                </div>
-            </div>
-
-            <!-- بخش کدنویسی -->
-            <div class="editor-container">
-                <div class="editor-toolbar">
-                    <span class="editor-label">محل کدنویسی (main.py):</span>
-                    <button class="run-btn" onclick="runPython()">
-                        &#9658; اجرا
-                    </button>
-                </div>
-                <textarea id="code-input" spellcheck="false" placeholder="کد خود را اینجا بنویسید..."></textarea>
-                
-                <div>
-                    <span class="output-label">خروجی ترمینال:</span>
-                    <div id="output" class="output-console"></div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        // === محتوای آموزشی (دیتابیس دروس) ===
-        const curriculum = [
-            {
-                id: 1,
-                title: "درس ۱: سلام دنیا!",
-                content: `
-                    <p>به دنیای پایتون خوش آمدید! اولین سنت هر برنامه‌نویسی این است که به دنیا سلام کند.</p>
-                    <p>در پایتون، برای نمایش متن روی صفحه از دستور <code>print()</code> استفاده می‌کنیم.</p>
-                    <p>مثال: <br><code>print("Hello World")</code></p>
-                    <p><strong>تمرین:</strong> در کادر پایین دستور چاپ کردن متن "Salam Python" را بنویسید و دکمه اجرا را بزنید.</p>
-                `,
-                defaultCode: 'print("Salam Python")',
-                expectedOutput: "Salam Python"
-            },
-            {
-                id: 2,
-                title: "درس ۲: متغیرها (Variables)",
-                content: `
-                    <p>متغیرها مثل جعبه‌هایی هستند که می‌توانیم اطلاعات را در آن‌ها ذخیره کنیم.</p>
-                    <p>برای ساخت متغیر، فقط کافیست یک نام انتخاب کنید و با علامت <code>=</code> مقداری را به آن بدهید.</p>
-                    <p>مثال:<br><code>name = "Ali"<br>print(name)</code></p>
-                    <p><strong>تمرین:</strong> یک متغیر به نام <code>score</code> بسازید، مقدار آن را <code>20</code> قرار دهید و سپس آن را چاپ کنید.</p>
-                `,
-                defaultCode: '# کد خود را اینجا بنویسید\n'
-            },
-            {
-                id: 3,
-                title: "درس ۳: اعداد و محاسبات",
-                content: `
-                    <p>پایتون یک ماشین حساب قدرتمند است. شما می‌توانید جمع (+)، تفریق (-)، ضرب (*) و تقسیم (/) انجام دهید.</p>
-                    <p>مثال:<br><code>x = 5 + 3<br>print(x)</code></p>
-                    <p><strong>تمرین:</strong> برنامه ای بنویسید که حاصل ضرب عدد 12 در 4 را چاپ کند.</p>
-                `,
-                defaultCode: 'print(12 * 4)'
-            },
-            {
-                id: 4,
-                title: "درس ۴: شرط‌ها (If/Else)",
-                content: `
-                    <p>گاهی می‌خواهیم برنامه ما تصمیم بگیرد. اگر شرطی درست بود، کاری را انجام دهد.</p>
-                    <p>ساختار:<br>
-                    <code>if age > 18:<br>&nbsp;&nbsp;print("Bozorgsal")<br>else:<br>&nbsp;&nbsp;print("Koodak")</code>
-                    </p>
-                    <p>نکته مهم: در پایتون فاصله‌گذاری (Indentation) بسیار مهم است.</p>
-                    <p><strong>تمرین:</strong> کدی بنویسید که اگر متغیر <code>a = 10</code> بزرگتر از 5 بود، چاپ کند "Big".</p>
-                `,
-                defaultCode: 'a = 10\nif a > 5:\n    print("Big")'
-            },
-            {
-                id: 5,
-                title: "درس ۵: حلقه‌ها (Loops)",
-                content: `
-                    <p>اگر بخواهیم کاری را چند بار تکرار کنیم، از حلقه استفاده می‌کنیم.</p>
-                    <p>حلقه <code>for</code> برای تکرار روی یک بازه عالی است.</p>
-                    <p>مثال (چاپ اعداد 0 تا 4):<br><code>for i in range(5):<br>&nbsp;&nbsp;print(i)</code></p>
-                    <p><strong>تمرین:</strong> یک حلقه بنویسید که کلمه "Python" را 3 بار چاپ کند.</p>
-                `,
-                defaultCode: 'for i in range(3):\n    print("Python")'
-            },
-            {
-                id: 6,
-                title: "درس ۶: لیست‌ها (Lists)",
-                content: `
-                    <p>لیست‌ها مجموعه‌ای از داده‌ها هستند که با کاما جدا شده و داخل براکت <code>[]</code> قرار می‌گیرند.</p>
-                    <p>مثال:<br><code>fruits = ["Apple", "Banana", "Cherry"]<br>print(fruits[0]) # چاپ اولین آیتم</code></p>
-                    <p><strong>تمرین:</strong> یک لیست از ۳ رنگ بسازید و کل لیست را چاپ کنید.</p>
-                `,
-                defaultCode: 'colors = ["Red", "Green", "Blue"]\nprint(colors)'
-            }
-        ];
-
-        let currentLessonIndex = 0;
-
-        // === توابع رابط کاربری ===
-
-        function startCourse() {
-            document.getElementById('welcome-screen').style.display = 'none';
-            loadLessonList();
-            loadLesson(0);
-        }
-
-        function loadLessonList() {
-            const listContainer = document.getElementById('lesson-list');
-            listContainer.innerHTML = '';
-            
-            curriculum.forEach((lesson, index) => {
-                const li = document.createElement('li');
-                li.className = `lesson-item ${index === currentLessonIndex ? 'active' : ''}`;
-                li.onclick = () => loadLesson(index);
-                li.innerHTML = `
-                    <span>${lesson.title}</span>
-                    <span class="lesson-status">${index === currentLessonIndex ? '▶' : '●'}</span>
-                `;
-                listContainer.appendChild(li);
-            });
-        }
-
-        function loadLesson(index) {
-            currentLessonIndex = index;
-            const lesson = curriculum[index];
-            
-            // آپدیت UI محتوا
-            document.getElementById('lesson-title').innerText = lesson.title;
-            document.getElementById('lesson-desc').innerHTML = lesson.content;
-            document.getElementById('code-input').value = lesson.defaultCode;
-            document.getElementById('output').innerText = ''; // پاک کردن خروجی قبلی
-            
-            // آپدیت لیست سایدبار
-            const items = document.querySelectorAll('.lesson-item');
-            items.forEach((item, idx) => {
-                if(idx === index) {
-                    item.classList.add('active');
-                    item.querySelector('.lesson-status').innerText = '▶';
-                } else {
-                    item.classList.remove('active');
-                    item.querySelector('.lesson-status').innerText = '●';
-                }
-            });
-        }
-
-        // === موتور اجرای پایتون (Skulpt Configuration) ===
-        function outf(text) {
-            const outputDiv = document.getElementById("output");
-            outputDiv.innerText += text;
-            outputDiv.scrollTop = outputDiv.scrollHeight; // اسکرول خودکار به پایین
-        }
-
-        function builtinRead(x) {
-            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-                throw "File not found: '" + x + "'";
-            return Sk.builtinFiles["files"][x];
-        }
-
-        function runPython() {
-            const code = document.getElementById("code-input").value;
-            const outputDiv = document.getElementById("output");
-            outputDiv.innerText = ""; // پاک کردن خروجی قبلی
-            outputDiv.style.color = "#0f0"; // رنگ پیشفرض سبز
-
-            // تنظیمات Skulpt
-            Sk.pre = "output";
-            Sk.configure({ output: outf, read: builtinRead });
-
-            // نمایش پیام در حال اجرا
-            outputDiv.innerText = "> Running...\n";
-
-            const myPromise = Sk.misceval.asyncToPromise(function() {
-                return Sk.importMainWithBody("<stdin>", false, code, true);
-            });
-
-            myPromise.then(function(mod) {
-                outf("\n> Done.");
-            },
-            function(err) {
-                // نمایش خطا با رنگ قرمز
-                outputDiv.style.color = "#ff5252";
-                outf("\n" + err.toString());
-            });
-        }
-    </script>
-</body>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
+```
+
+---
+
+## 📁 src/index.css
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Python-inspired Dark Theme */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Python Blue */
+    --primary: 210 100% 56%;
+    --primary-foreground: 222 47% 6%;
+
+    /* Golden Yellow - Python's second color */
+    --secondary: 45 100% 51%;
+    --secondary-foreground: 222 47% 6%;
+
+    --muted: 222 30% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 45 100% 51%;
+    --accent-foreground: 222 47% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 210 100% 56%;
+
+    --radius: 0.75rem;
+
+    /* Custom Colors */
+    --code-bg: 222 47% 8%;
+    --code-border: 222 30% 20%;
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 56%) 0%, hsl(200 100% 45%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(45 100% 51%) 0%, hsl(35 100% 45%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(222 47% 6%) 0%, hsl(222 47% 10%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222 47% 11%) 0%, hsl(222 47% 8%) 100%);
+    
+    /* Shadows */
+    --shadow-glow-primary: 0 0 40px hsl(210 100% 56% / 0.3);
+    --shadow-glow-secondary: 0 0 40px hsl(45 100% 51% / 0.3);
+    --shadow-card: 0 10px 40px -10px hsl(222 47% 0% / 0.5);
+
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 100% 56%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 222 30% 15%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 210 100% 56%;
+  }
+
+  .dark {
+    /* Same as root - already dark theme */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    direction: rtl;
+  }
+
+  body {
+    @apply bg-background text-foreground font-vazir antialiased;
+    font-feature-settings: "ss01", "ss02";
+  }
+
+  /* Code blocks always LTR */
+  code, pre, .code-block {
+    direction: ltr;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-secondary {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .shadow-glow-primary {
+    box-shadow: var(--shadow-glow-primary);
+  }
+
+  .shadow-glow-secondary {
+    box-shadow: var(--shadow-glow-secondary);
+  }
+
+  .glass {
+    background: hsl(var(--card) / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+}
+
+/* Syntax Highlighting Colors */
+.syntax-keyword { color: hsl(280 100% 70%); }
+.syntax-string { color: hsl(95 80% 60%); }
+.syntax-number { color: hsl(30 100% 65%); }
+.syntax-comment { color: hsl(220 15% 50%); font-style: italic; }
+.syntax-function { color: hsl(200 100% 70%); }
+.syntax-variable { color: hsl(210 40% 90%); }
+.syntax-operator { color: hsl(45 100% 60%); }
+.syntax-builtin { color: hsl(180 70% 60%); }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(210 100% 56% / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(210 100% 56% / 0.5); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+```
+
+---
+
+## 📁 tailwind.config.ts
+
+```typescript
+import type { Config } from "tailwindcss";
+
+export default {
+  darkMode: ["class"],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  prefix: "",
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      fontFamily: {
+        vazir: ["Vazirmatn", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
+      },
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        code: {
+          bg: "hsl(var(--code-bg))",
+          border: "hsl(var(--code-border))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        shimmer: "shimmer 2s linear infinite",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "hero-pattern": "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config;
+```
+
+---
+
+## 📁 src/main.tsx
+
+```tsx
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
+import "./index.css";
+
+createRoot(document.getElementById("root")!).render(<App />);
+```
+
+---
+
+## 📁 src/App.tsx
+
+```tsx
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import Lessons from "./pages/Lessons";
+import LessonDetail from "./pages/LessonDetail";
+import Practice from "./pages/Practice";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/lessons" element={<Lessons />} />
+          <Route path="/lessons/:id" element={<LessonDetail />} />
+          <Route path="/practice" element={<Practice />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
+```
+
+---
+
+## 📁 src/lib/utils.ts
+
+```typescript
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+---
+
+## 📁 src/hooks/useProgress.ts
+
+```typescript
+import { useState, useEffect } from 'react';
+
+interface Progress {
+  completedLessons: string[];
+  completedExercises: string[];
+}
+
+const STORAGE_KEY = 'python-learning-progress';
+
+const getInitialProgress = (): Progress => {
+  if (typeof window === 'undefined') {
+    return { completedLessons: [], completedExercises: [] };
+  }
+  
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return { completedLessons: [], completedExercises: [] };
+    }
+  }
+  return { completedLessons: [], completedExercises: [] };
+};
+
+export function useProgress() {
+  const [progress, setProgress] = useState<Progress>(getInitialProgress);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  }, [progress]);
+
+  const completeLesson = (lessonId: string) => {
+    setProgress(prev => {
+      if (prev.completedLessons.includes(lessonId)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        completedLessons: [...prev.completedLessons, lessonId]
+      };
+    });
+  };
+
+  const completeExercise = (exerciseId: string) => {
+    setProgress(prev => {
+      if (prev.completedExercises.includes(exerciseId)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        completedExercises: [...prev.completedExercises, exerciseId]
+      };
+    });
+  };
+
+  const isLessonCompleted = (lessonId: string) => {
+    return progress.completedLessons.includes(lessonId);
+  };
+
+  const isExerciseCompleted = (exerciseId: string) => {
+    return progress.completedExercises.includes(exerciseId);
+  };
+
+  const getTotalProgress = (totalLessons: number) => {
+    return Math.round((progress.completedLessons.length / totalLessons) * 100);
+  };
+
+  const resetProgress = () => {
+    setProgress({ completedLessons: [], completedExercises: [] });
+  };
+
+  return {
+    progress,
+    completeLesson,
+    completeExercise,
+    isLessonCompleted,
+    isExerciseCompleted,
+    getTotalProgress,
+    resetProgress
+  };
+}
+```
+
+---
+
+## 📁 src/components/Navbar.tsx
+
+```tsx
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Code2, BookOpen, GraduationCap, Menu, X } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { href: "/", label: "خانه", icon: Code2 },
+  { href: "/lessons", label: "درس‌ها", icon: BookOpen },
+  { href: "/practice", label: "تمرین", icon: GraduationCap },
+];
+
+export function Navbar() {
+  const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <nav className="fixed top-0 right-0 left-0 z-50 glass">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-glow-primary group-hover:scale-110 transition-transform">
+              <Code2 className="w-6 h-6 text-primary-foreground" />
+            </div>
+            <span className="text-xl font-bold">
+              <span className="text-gradient-primary">پایتون</span>
+              <span className="text-secondary">یاد</span>
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-2">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = location.pathname === link.href;
+              return (
+                <Link key={link.href} to={link.href}>
+                  <Button
+                    variant={isActive ? "default" : "ghost"}
+                    className={cn(
+                      "gap-2",
+                      isActive && "shadow-glow-primary"
+                    )}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {link.label}
+                  </Button>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </Button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-border animate-fade-in">
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = location.pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Button
+                      variant={isActive ? "default" : "ghost"}
+                      className="w-full justify-start gap-2"
+                    >
+                      <Icon className="w-4 h-4" />
+                      {link.label}
+                    </Button>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}
+```
+
+---
+
+## 📁 src/components/CodeBlock.tsx
+
+```tsx
+import { useState } from "react";
+import { Check, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+interface CodeBlockProps {
+  code: string;
+  language?: string;
+  showLineNumbers?: boolean;
+  className?: string;
+}
+
+// Simple syntax highlighting for Python
+function highlightPython(code: string): JSX.Element[] {
+  const keywords = ['def', 'class', 'if', 'elif', 'else', 'for', 'while', 'return', 'import', 'from', 'as', 'try', 'except', 'finally', 'with', 'lambda', 'yield', 'raise', 'pass', 'break', 'continue', 'and', 'or', 'not', 'in', 'is', 'True', 'False', 'None'];
+  const builtins = ['print', 'input', 'len', 'range', 'str', 'int', 'float', 'list', 'dict', 'set', 'tuple', 'type', 'open', 'file', 'abs', 'min', 'max', 'sum', 'sorted', 'enumerate', 'zip', 'map', 'filter'];
+  
+  const lines = code.split('\n');
+  
+  return lines.map((line, lineIndex) => {
+    const parts: JSX.Element[] = [];
+    let remaining = line;
+    let partIndex = 0;
+
+    // Process comments
+    const commentIndex = remaining.indexOf('#');
+    let comment = '';
+    if (commentIndex !== -1) {
+      comment = remaining.slice(commentIndex);
+      remaining = remaining.slice(0, commentIndex);
+    }
+
+    // Tokenize the line
+    const tokenRegex = /(\s+)|("[^"]*"|'[^']*')|(\d+\.?\d*)|([a-zA-Z_]\w*)|([+\-*/%=<>!&|^~]+)|([()[\]{},.:;])/g;
+    let match;
+    
+    while ((match = tokenRegex.exec(remaining)) !== null) {
+      const token = match[0];
+      
+      if (/^\s+$/.test(token)) {
+        parts.push(<span key={partIndex++}>{token}</span>);
+      } else if (/^["']/.test(token)) {
+        parts.push(<span key={partIndex++} className="syntax-string">{token}</span>);
+      } else if (/^\d/.test(token)) {
+        parts.push(<span key={partIndex++} className="syntax-number">{token}</span>);
+      } else if (keywords.includes(token)) {
+        parts.push(<span key={partIndex++} className="syntax-keyword">{token}</span>);
+      } else if (builtins.includes(token)) {
+        parts.push(<span key={partIndex++} className="syntax-builtin">{token}</span>);
+      } else if (/^[a-zA-Z_]/.test(token)) {
+        // Check if it's a function call
+        const nextChar = remaining[tokenRegex.lastIndex];
+        if (nextChar === '(') {
+          parts.push(<span key={partIndex++} className="syntax-function">{token}</span>);
+        } else {
+          parts.push(<span key={partIndex++} className="syntax-variable">{token}</span>);
+        }
+      } else if (/^[+\-*/%=<>!&|^~]+$/.test(token)) {
+        parts.push(<span key={partIndex++} className="syntax-operator">{token}</span>);
+      } else {
+        parts.push(<span key={partIndex++}>{token}</span>);
+      }
+    }
+
+    if (comment) {
+      parts.push(<span key={partIndex++} className="syntax-comment">{comment}</span>);
+    }
+
+    return (
+      <div key={lineIndex} className="leading-6">
+        {parts.length > 0 ? parts : '\u00A0'}
+      </div>
+    );
+  });
+}
+
+export function CodeBlock({ code, language = "python", showLineNumbers = true, className }: CodeBlockProps) {
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const lines = code.split('\n');
+
+  return (
+    <div className={cn("relative group rounded-xl overflow-hidden border border-code-border", className)}>
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-2 bg-code-bg border-b border-code-border">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-destructive/80" />
+            <div className="w-3 h-3 rounded-full bg-secondary/80" />
+            <div className="w-3 h-3 rounded-full bg-success/80" />
+          </div>
+          <span className="text-xs text-muted-foreground font-mono mr-4">{language}</span>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-7 px-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={copyToClipboard}
+        >
+          {copied ? (
+            <>
+              <Check className="w-3 h-3 text-success" />
+              <span className="text-success">کپی شد!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3 h-3" />
+              <span>کپی</span>
+            </>
+          )}
+        </Button>
+      </div>
+
+      {/* Code Content */}
+      <div className="bg-code-bg p-4 overflow-x-auto">
+        <div className="flex font-mono text-sm">
+          {showLineNumbers && (
+            <div className="flex flex-col pl-4 border-l border-code-border text-muted-foreground select-none text-right">
+              {lines.map((_, i) => (
+                <div key={i} className="leading-6 px-2">
+                  {i + 1}
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="flex-1 pr-4">
+            {highlightPython(code)}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/components/LessonCard.tsx
+
+```tsx
+import { Link } from "react-router-dom";
+import { CheckCircle, Circle, Clock, ChevronLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface LessonCardProps {
+  id: string;
+  number: number;
+  title: string;
+  description: string;
+  duration: string;
+  isCompleted?: boolean;
+  isLocked?: boolean;
+}
+
+export function LessonCard({
+  id,
+  number,
+  title,
+  description,
+  duration,
+  isCompleted = false,
+  isLocked = false,
+}: LessonCardProps) {
+  return (
+    <Link
+      to={isLocked ? "#" : `/lessons/${id}`}
+      className={cn(
+        "block group",
+        isLocked && "cursor-not-allowed opacity-60"
+      )}
+    >
+      <div
+        className={cn(
+          "relative p-6 rounded-2xl border transition-all duration-300",
+          "bg-gradient-card border-border",
+          !isLocked && "hover:border-primary/50 hover:shadow-glow-primary hover:-translate-y-1",
+          isCompleted && "border-success/50"
+        )}
+      >
+        {/* Lesson Number Badge */}
+        <div
+          className={cn(
+            "absolute -top-3 -right-3 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-transform group-hover:scale-110",
+            isCompleted
+              ? "bg-success text-success-foreground"
+              : "bg-primary text-primary-foreground"
+          )}
+        >
+          {number}
+        </div>
+
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+              {title}
+            </h3>
+            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+              {description}
+            </p>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4" />
+                <span>{duration}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {isCompleted ? (
+                  <>
+                    <CheckCircle className="w-4 h-4 text-success" />
+                    <span className="text-success">تکمیل شده</span>
+                  </>
+                ) : (
+                  <>
+                    <Circle className="w-4 h-4" />
+                    <span>در انتظار</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-muted group-hover:bg-primary/20 transition-colors">
+            <ChevronLeft className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+```
+
+---
+
+## 📁 src/components/PracticeEditor.tsx
+
+```tsx
+import { useState } from "react";
+import { Play, RotateCcw, CheckCircle, XCircle, Lightbulb } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+interface PracticeEditorProps {
+  initialCode: string;
+  expectedOutput: string;
+  hint?: string;
+  onSuccess?: () => void;
+}
+
+export function PracticeEditor({
+  initialCode,
+  expectedOutput,
+  hint,
+  onSuccess,
+}: PracticeEditorProps) {
+  const [code, setCode] = useState(initialCode);
+  const [output, setOutput] = useState<string | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [showHint, setShowHint] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+
+  // Simulate Python execution (basic simulation)
+  const simulatePython = (code: string): string => {
+    try {
+      // Find print statements and extract their content
+      const printRegex = /print\s*\(\s*(?:f?["']([^"']*?)["']|(\d+))\s*\)/g;
+      const outputs: string[] = [];
+      let match;
+      
+      while ((match = printRegex.exec(code)) !== null) {
+        outputs.push(match[1] || match[2] || '');
+      }
+
+      // Handle simple variable assignments and prints
+      const lines = code.split('\n');
+      const variables: Record<string, string | number> = {};
+      
+      for (const line of lines) {
+        const trimmed = line.trim();
+        
+        // Variable assignment
+        const assignMatch = trimmed.match(/^(\w+)\s*=\s*(?:["']([^"']+)["']|(\d+))$/);
+        if (assignMatch) {
+          const [, varName, strVal, numVal] = assignMatch;
+          variables[varName] = strVal || Number(numVal);
+        }
+        
+        // Print with variable
+        const printVarMatch = trimmed.match(/^print\s*\(\s*(\w+)\s*\)$/);
+        if (printVarMatch && variables[printVarMatch[1]] !== undefined) {
+          outputs.push(String(variables[printVarMatch[1]]));
+        }
+
+        // Print with f-string variable
+        const fstringMatch = trimmed.match(/^print\s*\(\s*f["'].*\{(\w+)\}.*["']\s*\)$/);
+        if (fstringMatch) {
+          const template = trimmed.match(/f["'](.*)["']/)?.[1] || '';
+          let result = template;
+          for (const [key, value] of Object.entries(variables)) {
+            result = result.replace(`{${key}}`, String(value));
+          }
+          // Remove duplicate outputs
+          const idx = outputs.findIndex(o => o.includes('{'));
+          if (idx >= 0) outputs.splice(idx, 1);
+          outputs.push(result);
+        }
+      }
+
+      return outputs.join('\n') || 'خروجی خالی';
+    } catch {
+      return 'خطا در اجرای کد';
+    }
+  };
+
+  const runCode = async () => {
+    setIsRunning(true);
+    setOutput(null);
+    setIsCorrect(null);
+
+    // Simulate execution delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const result = simulatePython(code);
+    setOutput(result);
+    
+    const correct = result.trim() === expectedOutput.trim();
+    setIsCorrect(correct);
+    
+    if (correct && onSuccess) {
+      onSuccess();
+    }
+
+    setIsRunning(false);
+  };
+
+  const resetCode = () => {
+    setCode(initialCode);
+    setOutput(null);
+    setIsCorrect(null);
+    setShowHint(false);
+  };
+
+  return (
+    <div className="rounded-2xl border border-border overflow-hidden bg-gradient-card">
+      {/* Editor Header */}
+      <div className="flex items-center justify-between px-4 py-3 bg-code-bg border-b border-border">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-destructive/80" />
+            <div className="w-3 h-3 rounded-full bg-secondary/80" />
+            <div className="w-3 h-3 rounded-full bg-success/80" />
+          </div>
+          <span className="text-sm text-muted-foreground font-mono mr-4">محیط تمرین</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {hint && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowHint(!showHint)}
+              className="text-secondary hover:text-secondary"
+            >
+              <Lightbulb className="w-4 h-4 ml-1" />
+              راهنما
+            </Button>
+          )}
+          <Button variant="ghost" size="sm" onClick={resetCode}>
+            <RotateCcw className="w-4 h-4 ml-1" />
+            بازنشانی
+          </Button>
+          <Button
+            variant="success"
+            size="sm"
+            onClick={runCode}
+            disabled={isRunning}
+            className="gap-1"
+          >
+            <Play className="w-4 h-4" />
+            {isRunning ? "در حال اجرا..." : "اجرا"}
+          </Button>
+        </div>
+      </div>
+
+      {/* Hint Box */}
+      {showHint && hint && (
+        <div className="px-4 py-3 bg-secondary/10 border-b border-border">
+          <div className="flex items-start gap-2 text-sm">
+            <Lightbulb className="w-4 h-4 text-secondary mt-0.5 shrink-0" />
+            <p className="text-secondary">{hint}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Code Editor */}
+      <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-border">
+        <div className="p-4">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
+            کد خود را بنویسید:
+          </label>
+          <textarea
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            className="w-full h-48 p-4 rounded-xl bg-code-bg border border-code-border font-mono text-sm text-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+            style={{ direction: 'ltr', textAlign: 'left' }}
+            spellCheck={false}
+          />
+        </div>
+
+        {/* Output Panel */}
+        <div className="p-4">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
+            خروجی:
+          </label>
+          <div
+            className={cn(
+              "h-48 p-4 rounded-xl border font-mono text-sm overflow-auto",
+              "bg-code-bg",
+              isCorrect === true && "border-success/50 bg-success/5",
+              isCorrect === false && "border-destructive/50 bg-destructive/5",
+              isCorrect === null && "border-code-border"
+            )}
+            style={{ direction: 'ltr', textAlign: 'left' }}
+          >
+            {output ? (
+              <pre className="whitespace-pre-wrap">{output}</pre>
+            ) : (
+              <span className="text-muted-foreground">
+                برای مشاهده خروجی، کد را اجرا کنید...
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Result Message */}
+      {isCorrect !== null && (
+        <div
+          className={cn(
+            "px-4 py-3 flex items-center gap-2",
+            isCorrect ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
+          )}
+        >
+          {isCorrect ? (
+            <>
+              <CheckCircle className="w-5 h-5" />
+              <span className="font-medium">آفرین! جواب درست است! 🎉</span>
+            </>
+          ) : (
+            <>
+              <XCircle className="w-5 h-5" />
+              <span className="font-medium">
+                خروجی مورد انتظار: {expectedOutput}
+              </span>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/components/ProgressBar.tsx
+
+```tsx
+import { cn } from "@/lib/utils";
+
+interface ProgressBarProps {
+  value: number;
+  className?: string;
+  showLabel?: boolean;
+}
+
+export function ProgressBar({ value, className, showLabel = true }: ProgressBarProps) {
+  return (
+    <div className={cn("w-full", className)}>
+      {showLabel && (
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm text-muted-foreground">پیشرفت کلی</span>
+          <span className="text-sm font-semibold text-primary">{value}%</span>
+        </div>
+      )}
+      <div className="h-3 bg-muted rounded-full overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-l from-primary to-primary/70 rounded-full transition-all duration-500 ease-out"
+          style={{ width: `${value}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/components/ui/button.tsx
+
+```tsx
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-border bg-transparent hover:bg-muted hover:text-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5",
+        ghost: "hover:bg-muted hover:text-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        hero: "bg-primary text-primary-foreground font-semibold px-8 py-6 text-lg shadow-glow-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300",
+        heroSecondary: "bg-transparent border-2 border-secondary text-secondary font-semibold px-8 py-6 text-lg hover:bg-secondary hover:text-secondary-foreground transition-all duration-300",
+        success: "bg-success text-success-foreground hover:bg-success/90 shadow-lg",
+        glass: "glass text-foreground hover:bg-card/90 border border-border/50",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-lg px-8",
+        xl: "h-14 rounded-xl px-10 text-base",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
+    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+  }
+);
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
+```
+
+---
+
+## 📁 src/pages/Index.tsx
+
+```tsx
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Navbar } from "@/components/Navbar";
+import { CodeBlock } from "@/components/CodeBlock";
+import { ProgressBar } from "@/components/ProgressBar";
+import { useProgress } from "@/hooks/useProgress";
+import { lessons } from "@/data/lessons";
+import {
+  Code2,
+  BookOpen,
+  GraduationCap,
+  Zap,
+  Target,
+  Trophy,
+  ChevronLeft,
+  Terminal,
+  Sparkles,
+} from "lucide-react";
+
+const features = [
+  {
+    icon: BookOpen,
+    title: "درس‌های گام به گام",
+    description: "از صفر تا سطح متوسط، با توضیحات ساده و فارسی",
+  },
+  {
+    icon: Terminal,
+    title: "محیط تمرین تعاملی",
+    description: "کد بنویسید و نتیجه را همان لحظه ببینید",
+  },
+  {
+    icon: Target,
+    title: "تمرین‌های متنوع",
+    description: "تمرین‌های عملی برای تثبیت مطالب هر درس",
+  },
+  {
+    icon: Trophy,
+    title: "ردیابی پیشرفت",
+    description: "پیشرفت خود را دنبال کنید و انگیزه بگیرید",
+  },
+];
+
+const sampleCode = `# به پایتون خوش آمدید!
+name = "دوست من"
+print(f"سلام {name}!")
+
+# محاسبه ساده
+result = 2 + 2
+print(f"دو به‌علاوه دو = {result}")`;
+
+export default function Index() {
+  const { getTotalProgress } = useProgress();
+  const progress = getTotalProgress(lessons.length);
+
+  return (
+    <div className="min-h-screen bg-background bg-hero-pattern">
+      <Navbar />
+
+      {/* Hero Section */}
+      <section className="pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden">
+        {/* Background Glow Effects */}
+        <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
+
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-4xl mx-auto text-center stagger-children">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
+              <Sparkles className="w-4 h-4" />
+              <span>آموزش رایگان و کامل پایتون</span>
+            </div>
+
+            {/* Main Heading */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+              <span className="text-gradient-primary">پایتون</span> را از صفر
+              <br />
+              یاد بگیرید
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              بدون هیچ پیش‌نیازی، با آموزش‌های گام به گام و فارسی، برنامه‌نویسی
+              پایتون را یاد بگیرید
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Link to="/lessons">
+                <Button variant="hero" size="xl" className="w-full sm:w-auto">
+                  شروع یادگیری
+                  <ChevronLeft className="w-5 h-5 mr-2" />
+                </Button>
+              </Link>
+              <Link to="/practice">
+                <Button
+                  variant="heroSecondary"
+                  size="xl"
+                  className="w-full sm:w-auto"
+                >
+                  <GraduationCap className="w-5 h-5 ml-2" />
+                  تمرین کنید
+                </Button>
+              </Link>
+            </div>
+
+            {/* Progress (if user has progress) */}
+            {progress > 0 && (
+              <div className="max-w-md mx-auto glass rounded-2xl p-4">
+                <ProgressBar value={progress} />
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Code Preview Section */}
+      <section className="py-16 relative">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="order-2 lg:order-1">
+              <CodeBlock code={sampleCode} className="shadow-glow-primary" />
+            </div>
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                کدنویسی ساده و لذت‌بخش
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                پایتون یکی از ساده‌ترین و در عین حال قدرتمندترین زبان‌های
+                برنامه‌نویسی است. با سینتکس شبیه به زبان انگلیسی، یادگیری آن
+                بسیار آسان است.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "سینتکس ساده و خوانا",
+                  "مناسب برای مبتدیان",
+                  "کاربرد در هوش مصنوعی، وب و علم داده",
+                  "جامعه بزرگ و کتابخانه‌های فراوان",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center">
+                      <Zap className="w-3 h-3 text-success" />
+                    </div>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-gradient-hero">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              چرا <span className="text-gradient-secondary">پایتون‌یاد</span>؟
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              همه چیز برای یادگیری پایتون در یک جا جمع شده
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((feature, i) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={i}
+                  className="group p-6 rounded-2xl bg-gradient-card border border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-primary"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-muted-foreground text-sm">
+                    {feature.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: `${lessons.length}`, label: "درس آموزشی" },
+              { value: "۵۰+", label: "تمرین عملی" },
+              { value: "۱۰۰%", label: "رایگان" },
+              { value: "۰", label: "پیش‌نیاز" },
+            ].map((stat, i) => (
+              <div key={i} className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-gradient-primary mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-muted-foreground">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center glass rounded-3xl p-8 md:p-12 relative overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/30 rounded-full blur-3xl" />
+            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-secondary/30 rounded-full blur-3xl" />
+
+            <div className="relative">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6 animate-float">
+                <Code2 className="w-8 h-8 text-primary" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                آماده‌اید شروع کنید؟
+              </h2>
+              <p className="text-muted-foreground text-lg mb-8">
+                همین الان اولین قدم را بردارید و سفر خود در دنیای برنامه‌نویسی
+                را آغاز کنید
+              </p>
+              <Link to="/lessons">
+                <Button variant="hero" size="xl">
+                  شروع یادگیری رایگان
+                  <ChevronLeft className="w-5 h-5 mr-2" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-border">
+        <div className="container mx-auto px-4 text-center text-muted-foreground">
+          <p>ساخته شده با ❤️ برای جامعه فارسی‌زبان</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/pages/Lessons.tsx
+
+```tsx
+import { Navbar } from "@/components/Navbar";
+import { LessonCard } from "@/components/LessonCard";
+import { ProgressBar } from "@/components/ProgressBar";
+import { useProgress } from "@/hooks/useProgress";
+import { lessons } from "@/data/lessons";
+import { BookOpen } from "lucide-react";
+
+export default function Lessons() {
+  const { isLessonCompleted, getTotalProgress } = useProgress();
+  const progress = getTotalProgress(lessons.length);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+
+      <main className="pt-24 pb-16">
+        <div className="container mx-auto px-4">
+          {/* Header */}
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
+              <BookOpen className="w-4 h-4" />
+              <span>{lessons.length} درس آموزشی</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              درس‌های <span className="text-gradient-primary">پایتون</span>
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              از مفاهیم پایه شروع کنید و قدم به قدم پیش بروید
+            </p>
+
+            {/* Overall Progress */}
+            <div className="max-w-md mx-auto">
+              <ProgressBar value={progress} />
+            </div>
+          </div>
+
+          {/* Lessons Grid */}
+          <div className="max-w-3xl mx-auto">
+            <div className="space-y-4">
+              {lessons.map((lesson) => (
+                <LessonCard
+                  key={lesson.id}
+                  id={lesson.id}
+                  number={lesson.number}
+                  title={lesson.title}
+                  description={lesson.description}
+                  duration={lesson.duration}
+                  isCompleted={isLessonCompleted(lesson.id)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Coming Soon */}
+          <div className="max-w-3xl mx-auto mt-12 text-center">
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold mb-2">درس‌های بیشتر به زودی!</h3>
+              <p className="text-muted-foreground">
+                درس‌های پیشرفته‌تر شامل برنامه‌نویسی شیءگرا، کار با فایل‌ها، و
+                پروژه‌های عملی در حال آماده‌سازی هستند.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/pages/LessonDetail.tsx
+
+```tsx
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { Navbar } from "@/components/Navbar";
+import { CodeBlock } from "@/components/CodeBlock";
+import { PracticeEditor } from "@/components/PracticeEditor";
+import { Button } from "@/components/ui/button";
+import { useProgress } from "@/hooks/useProgress";
+import { getLessonById, getNextLesson, getPreviousLesson } from "@/data/lessons";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle,
+  BookOpen,
+  AlertTriangle,
+  Lightbulb,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useEffect } from "react";
+
+export default function LessonDetail() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { completeLesson, completeExercise, isLessonCompleted, isExerciseCompleted } = useProgress();
+
+  const lesson = getLessonById(id || "");
+  const nextLesson = getNextLesson(id || "");
+  const prevLesson = getPreviousLesson(id || "");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  if (!lesson) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="pt-24 pb-16">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-2xl font-bold mb-4">درس یافت نشد</h1>
+            <Link to="/lessons">
+              <Button>بازگشت به درس‌ها</Button>
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const handleExerciseSuccess = (exerciseId: string) => {
+    completeExercise(exerciseId);
+  };
+
+  const handleCompleteLesson = () => {
+    completeLesson(lesson.id);
+    if (nextLesson) {
+      navigate(`/lessons/${nextLesson.id}`);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+
+      <main className="pt-24 pb-16">
+        <div className="container mx-auto px-4">
+          {/* Breadcrumb */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Link to="/lessons" className="hover:text-primary transition-colors">
+                درس‌ها
+              </Link>
+              <ChevronLeft className="w-4 h-4" />
+              <span className="text-foreground">{lesson.title}</span>
+            </div>
+          </div>
+
+          {/* Lesson Header */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="flex items-start gap-4">
+              <div
+                className={cn(
+                  "w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold shrink-0",
+                  isLessonCompleted(lesson.id)
+                    ? "bg-success text-success-foreground"
+                    : "bg-primary text-primary-foreground"
+                )}
+              >
+                {lesson.number}
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                  {lesson.title}
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  {lesson.description}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Lesson Content */}
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-8">
+              {lesson.content.map((block, index) => {
+                switch (block.type) {
+                  case "text":
+                    return (
+                      <div
+                        key={index}
+                        className="prose prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{
+                          __html: block.content
+                            .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold mt-8 mb-4 text-foreground">$1</h2>')
+                            .replace(/^### (.+)$/gm, '<h3 class="text-xl font-semibold mt-6 mb-3 text-foreground">$1</h3>')
+                            .replace(/\*\*(.+?)\*\*/g, '<strong class="text-foreground">$1</strong>')
+                            .replace(/`(.+?)`/g, '<code class="px-1.5 py-0.5 rounded bg-code-bg text-primary font-mono text-sm">$1</code>')
+                            .replace(/\n\n/g, '</p><p class="text-muted-foreground leading-relaxed mb-4">')
+                            .replace(/^\|(.+)$/gm, (match) => {
+                              const rows = match.split('\n').filter(r => r.trim());
+                              const headers = rows[0]?.split('|').filter(c => c.trim());
+                              if (!headers) return match;
+                              return `<div class="overflow-x-auto my-6"><table class="w-full border-collapse"><thead><tr>${headers.map(h => `<th class="px-4 py-2 bg-muted text-right border border-border">${h.trim()}</th>`).join('')}</tr></thead></table></div>`;
+                            })
+                        }}
+                      />
+                    );
+                  case "code":
+                    return <CodeBlock key={index} code={block.content} />;
+                  case "note":
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 p-4 rounded-xl bg-primary/10 border border-primary/20"
+                      >
+                        <Lightbulb className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <p className="text-foreground">{block.content}</p>
+                      </div>
+                    );
+                  case "warning":
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 p-4 rounded-xl bg-secondary/10 border border-secondary/20"
+                      >
+                        <AlertTriangle className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
+                        <p className="text-foreground">{block.content}</p>
+                      </div>
+                    );
+                  default:
+                    return null;
+                }
+              })}
+            </div>
+
+            {/* Exercises */}
+            {lesson.exercises.length > 0 && (
+              <div className="mt-16">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                  <BookOpen className="w-6 h-6 text-primary" />
+                  تمرین‌های این درس
+                </h2>
+                <div className="space-y-8">
+                  {lesson.exercises.map((exercise) => (
+                    <div key={exercise.id}>
+                      <div className="flex items-center gap-2 mb-4">
+                        <h3 className="text-lg font-semibold">{exercise.title}</h3>
+                        {isExerciseCompleted(exercise.id) && (
+                          <CheckCircle className="w-5 h-5 text-success" />
+                        )}
+                      </div>
+                      <p className="text-muted-foreground mb-4">
+                        {exercise.description}
+                      </p>
+                      <PracticeEditor
+                        initialCode={exercise.initialCode}
+                        expectedOutput={exercise.expectedOutput}
+                        hint={exercise.hint}
+                        onSuccess={() => handleExerciseSuccess(exercise.id)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Navigation */}
+            <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border">
+              {prevLesson ? (
+                <Link to={`/lessons/${prevLesson.id}`} className="w-full sm:w-auto">
+                  <Button variant="outline" className="w-full sm:w-auto gap-2">
+                    <ChevronRight className="w-4 h-4" />
+                    درس قبلی: {prevLesson.title}
+                  </Button>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              <Button
+                variant={isLessonCompleted(lesson.id) ? "success" : "default"}
+                onClick={handleCompleteLesson}
+                className="w-full sm:w-auto gap-2"
+              >
+                {isLessonCompleted(lesson.id) ? (
+                  <>
+                    <CheckCircle className="w-4 h-4" />
+                    تکمیل شده
+                  </>
+                ) : nextLesson ? (
+                  <>
+                    تکمیل و ادامه
+                    <ChevronLeft className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    تکمیل درس
+                    <CheckCircle className="w-4 h-4" />
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/pages/Practice.tsx
+
+```tsx
+import { useState } from "react";
+import { Navbar } from "@/components/Navbar";
+import { PracticeEditor } from "@/components/PracticeEditor";
+import { Button } from "@/components/ui/button";
+import { useProgress } from "@/hooks/useProgress";
+import { practiceExercises } from "@/data/practiceExercises";
+import {
+  GraduationCap,
+  CheckCircle,
+  Filter,
+  Sparkles,
+  Target,
+  Flame,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+type Difficulty = "all" | "easy" | "medium" | "hard";
+
+const difficultyConfig = {
+  easy: { label: "آسان", icon: Sparkles, color: "text-success" },
+  medium: { label: "متوسط", icon: Target, color: "text-secondary" },
+  hard: { label: "سخت", icon: Flame, color: "text-destructive" },
+};
+
+export default function Practice() {
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>("all");
+  const [selectedExercise, setSelectedExercise] = useState(practiceExercises[0]);
+  const { completeExercise, isExerciseCompleted } = useProgress();
+
+  const filteredExercises =
+    selectedDifficulty === "all"
+      ? practiceExercises
+      : practiceExercises.filter((ex) => ex.difficulty === selectedDifficulty);
+
+  const completedCount = practiceExercises.filter((ex) =>
+    isExerciseCompleted(ex.id)
+  ).length;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+
+      <main className="pt-24 pb-16">
+        <div className="container mx-auto px-4">
+          {/* Header */}
+          <div className="max-w-4xl mx-auto text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-sm font-medium mb-6">
+              <GraduationCap className="w-4 h-4" />
+              <span>{practiceExercises.length} تمرین</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              محیط <span className="text-gradient-secondary">تمرین</span>
+            </h1>
+            <p className="text-lg text-muted-foreground mb-6">
+              با حل تمرین‌های عملی، مهارت‌های برنامه‌نویسی خود را تقویت کنید
+            </p>
+
+            {/* Stats */}
+            <div className="flex justify-center gap-8 mb-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-gradient-primary">
+                  {completedCount}
+                </div>
+                <div className="text-sm text-muted-foreground">حل شده</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-gradient-secondary">
+                  {practiceExercises.length - completedCount}
+                </div>
+                <div className="text-sm text-muted-foreground">باقی‌مانده</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Exercise List */}
+              <div className="lg:col-span-1">
+                <div className="glass rounded-2xl p-4 sticky top-24">
+                  {/* Filter */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <Filter className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">فیلتر سختی:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    <Button
+                      variant={selectedDifficulty === "all" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedDifficulty("all")}
+                    >
+                      همه
+                    </Button>
+                    {(["easy", "medium", "hard"] as const).map((diff) => {
+                      const config = difficultyConfig[diff];
+                      const Icon = config.icon;
+                      return (
+                        <Button
+                          key={diff}
+                          variant={
+                            selectedDifficulty === diff ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => setSelectedDifficulty(diff)}
+                          className="gap-1"
+                        >
+                          <Icon className={cn("w-3 h-3", config.color)} />
+                          {config.label}
+                        </Button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Exercise List */}
+                  <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+                    {filteredExercises.map((exercise) => {
+                      const config = difficultyConfig[exercise.difficulty];
+                      const Icon = config.icon;
+                      const isCompleted = isExerciseCompleted(exercise.id);
+                      const isSelected = selectedExercise.id === exercise.id;
+
+                      return (
+                        <button
+                          key={exercise.id}
+                          onClick={() => setSelectedExercise(exercise)}
+                          className={cn(
+                            "w-full text-right p-3 rounded-xl transition-all duration-200",
+                            "border",
+                            isSelected
+                              ? "border-primary bg-primary/10"
+                              : "border-transparent hover:bg-muted",
+                            isCompleted && "opacity-75"
+                          )}
+                        >
+                          <div className="flex items-center gap-2">
+                            {isCompleted ? (
+                              <CheckCircle className="w-4 h-4 text-success shrink-0" />
+                            ) : (
+                              <Icon
+                                className={cn("w-4 h-4 shrink-0", config.color)}
+                              />
+                            )}
+                            <span
+                              className={cn(
+                                "font-medium text-sm",
+                                isCompleted && "line-through"
+                              )}
+                            >
+                              {exercise.title}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 mt-1 mr-6">
+                            <span className="text-xs text-muted-foreground">
+                              {exercise.category}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Practice Area */}
+              <div className="lg:col-span-2">
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-2xl font-bold">{selectedExercise.title}</h2>
+                    {isExerciseCompleted(selectedExercise.id) && (
+                      <CheckCircle className="w-6 h-6 text-success" />
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={cn(
+                        "text-sm font-medium",
+                        difficultyConfig[selectedExercise.difficulty].color
+                      )}
+                    >
+                      {difficultyConfig[selectedExercise.difficulty].label}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      دسته‌بندی: {selectedExercise.category}
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-lg text-muted-foreground mb-6">
+                  {selectedExercise.description}
+                </p>
+
+                <PracticeEditor
+                  key={selectedExercise.id}
+                  initialCode={selectedExercise.initialCode}
+                  expectedOutput={selectedExercise.expectedOutput}
+                  hint={selectedExercise.hint}
+                  onSuccess={() => completeExercise(selectedExercise.id)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/pages/NotFound.tsx
+
+```tsx
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Navbar } from "@/components/Navbar";
+import { Home, AlertCircle } from "lucide-react";
+
+export default function NotFound() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+
+      <main className="pt-24 pb-16 flex items-center justify-center min-h-[80vh]">
+        <div className="text-center">
+          <div className="w-20 h-20 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto mb-6">
+            <AlertCircle className="w-10 h-10 text-destructive" />
+          </div>
+          <h1 className="text-6xl font-bold text-gradient-primary mb-4">۴۰۴</h1>
+          <p className="text-xl text-muted-foreground mb-8">
+            صفحه مورد نظر یافت نشد!
+          </p>
+          <Link to="/">
+            <Button variant="hero" className="gap-2">
+              <Home className="w-4 h-4" />
+              بازگشت به خانه
+            </Button>
+          </Link>
+        </div>
+      </main>
+    </div>
+  );
+}
+```
+
+---
+
+## 📁 src/data/lessons.ts
+
+```typescript
+export interface Lesson {
+  id: string;
+  number: number;
+  title: string;
+  description: string;
+  duration: string;
+  content: LessonContent[];
+  exercises: Exercise[];
+}
+
+export interface LessonContent {
+  type: 'text' | 'code' | 'note' | 'warning';
+  content: string;
+}
+
+export interface Exercise {
+  id: string;
+  title: string;
+  description: string;
+  initialCode: string;
+  expectedOutput: string;
+  hint?: string;
+}
+
+export const lessons: Lesson[] = [
+  {
+    id: "intro",
+    number: 1,
+    title: "آشنایی با پایتون",
+    description: "در این درس با زبان برنامه‌نویسی پایتون، تاریخچه و کاربردهای آن آشنا می‌شوید.",
+    duration: "۱۵ دقیقه",
+    content: [
+      {
+        type: 'text',
+        content: `## پایتون چیست؟
+
+پایتون یک زبان برنامه‌نویسی قدرتمند و در عین حال ساده است که توسط **گیدو وان روسوم** در سال ۱۹۹۱ ایجاد شد. نام این زبان از برنامه کمدی "Monty Python" گرفته شده است!
+
+### چرا پایتون؟
+
+- **ساده و خوانا**: سینتکس پایتون شبیه زبان انگلیسی است
+- **همه‌کاره**: از ساخت وبسایت تا هوش مصنوعی
+- **جامعه بزرگ**: میلیون‌ها برنامه‌نویس و هزاران کتابخانه رایگان
+- **تقاضای بالا**: یکی از پردرآمدترین مهارت‌های برنامه‌نویسی`
+      },
+      {
+        type: 'note',
+        content: '💡 پایتون در شرکت‌های بزرگی مثل گوگل، اینستاگرام، نتفلیکس و اسپاتیفای استفاده می‌شود!'
+      },
+      {
+        type: 'text',
+        content: `### اولین برنامه پایتون
+
+سنت برنامه‌نویسی این است که اولین برنامه، "سلام دنیا" را چاپ کند. در پایتون این کار بسیار ساده است:`
+      },
+      {
+        type: 'code',
+        content: `print("سلام دنیا!")
+print("به دنیای پایتون خوش آمدید")`
+      },
+      {
+        type: 'text',
+        content: `تابع \`print()\` برای نمایش متن در خروجی استفاده می‌شود. هر چیزی که داخل پرانتز و گیومه قرار دهید، نمایش داده می‌شود.`
+      }
+    ],
+    exercises: [
+      {
+        id: "ex1-1",
+        title: "اولین برنامه",
+        description: "یک برنامه بنویسید که \"سلام پایتون\" را چاپ کند.",
+        initialCode: '# کد خود را اینجا بنویسید\nprint("")',
+        expectedOutput: "سلام پایتون",
+        hint: 'متن مورد نظر را داخل گیومه‌ها در print() قرار دهید'
+      }
+    ]
+  },
+  // ... بقیه درس‌ها (برای اختصار حذف شده)
+];
+
+export const getLessonById = (id: string): Lesson | undefined => {
+  return lessons.find(lesson => lesson.id === id);
+};
+
+export const getNextLesson = (currentId: string): Lesson | undefined => {
+  const currentIndex = lessons.findIndex(lesson => lesson.id === currentId);
+  if (currentIndex !== -1 && currentIndex < lessons.length - 1) {
+    return lessons[currentIndex + 1];
+  }
+  return undefined;
+};
+
+export const getPreviousLesson = (currentId: string): Lesson | undefined => {
+  const currentIndex = lessons.findIndex(lesson => lesson.id === currentId);
+  if (currentIndex > 0) {
+    return lessons[currentIndex - 1];
+  }
+  return undefined;
+};
+```
+
+---
+
+## 📁 src/data/practiceExercises.ts
+
+```typescript
+export interface PracticeExercise {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  category: string;
+  initialCode: string;
+  expectedOutput: string;
+  hint?: string;
+}
+
+export const practiceExercises: PracticeExercise[] = [
+  {
+    id: "p1",
+    title: "سلام به دنیا",
+    description: "برنامه‌ای بنویسید که \"Hello World\" را چاپ کند.",
+    difficulty: "easy",
+    category: "مقدماتی",
+    initialCode: '# کد خود را بنویسید\n',
+    expectedOutput: "Hello World",
+    hint: 'از print("Hello World") استفاده کنید'
+  },
+  {
+    id: "p2",
+    title: "جمع دو عدد",
+    description: "دو متغیر a=10 و b=20 تعریف کنید و مجموع آنها را چاپ کنید.",
+    difficulty: "easy",
+    category: "متغیرها",
+    initialCode: '# متغیرها را تعریف کنید\n\n# مجموع را چاپ کنید',
+    expectedOutput: "30",
+    hint: 'a = 10, b = 20 و سپس print(a + b)'
+  },
+  // ... بقیه تمرین‌ها
+];
+
+export const getExercisesByDifficulty = (difficulty: 'easy' | 'medium' | 'hard') => {
+  return practiceExercises.filter(ex => ex.difficulty === difficulty);
+};
+
+export const getExercisesByCategory = (category: string) => {
+  return practiceExercises.filter(ex => ex.category === category);
+};
+```
+
+---
+
+## 🎨 ساختار پروژه
+
+```
+├── index.html
+├── tailwind.config.ts
+├── src/
+│   ├── main.tsx
+│   ├── App.tsx
+│   ├── index.css
+│   ├── lib/
+│   │   └── utils.ts
+│   ├── hooks/
+│   │   └── useProgress.ts
+│   ├── data/
+│   │   ├── lessons.ts
+│   │   └── practiceExercises.ts
+│   ├── components/
+│   │   ├── Navbar.tsx
+│   │   ├── CodeBlock.tsx
+│   │   ├── LessonCard.tsx
+│   │   ├── PracticeEditor.tsx
+│   │   ├── ProgressBar.tsx
+│   │   └── ui/
+│   │       └── button.tsx
+│   └── pages/
+│       ├── Index.tsx
+│       ├── Lessons.tsx
+│       ├── LessonDetail.tsx
+│       ├── Practice.tsx
+│       └── NotFound.tsx
+```
+
+---
+
+## 📝 نکات مهم
+
+1. **طراحی تم تاریک** با رنگ‌های آبی و زرد پایتون
+2. **فونت وزیرمتن** برای متن فارسی
+3. **JetBrains Mono** برای کدها
+4. **پیشرفت ذخیره‌سازی** در localStorage
+5. **Syntax Highlighting** برای کد پایتون
+6. **RTL کامل** برای زبان فارسی
